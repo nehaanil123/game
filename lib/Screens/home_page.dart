@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:plants_vs_zombie/Constant/assets.dart';
 import 'package:plants_vs_zombie/Models/bullet.dart';
 import 'package:plants_vs_zombie/Models/main_handler.dart';
 import 'package:plants_vs_zombie/Models/plant.dart';
+import 'package:plants_vs_zombie/Models/monument.dart';
 import 'package:plants_vs_zombie/Models/zombie.dart';
 import 'package:plants_vs_zombie/Utils/audio_player.dart';
 import 'package:plants_vs_zombie/Utils/math_util.dart';
@@ -15,6 +17,7 @@ import 'package:plants_vs_zombie/Widgets/score_board.dart';
 import 'package:plants_vs_zombie/Widgets/zombie.dart';
 import 'package:plants_vs_zombie/routes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,7 +25,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  PlantHandler _plant = PlantHandler(-0.90, 0.2);
+  MonumentHandler _monument = MonumentHandler(-0.80, 0.0);
+  PlantHandler _plant = PlantHandler(-0.70, 0.2);
   Bullethandler _bullet = Bullethandler(5, 5);
   ZombieHandler _zombie = ZombieHandler(1.1, 1);
   Timer _zombieTimer, _bulletTimer;
@@ -128,6 +132,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               _garden(),
               _gameControllers(),
+              _text(),
             ],
           ),
         ),
@@ -187,6 +192,27 @@ class _HomePageState extends State<HomePage> {
           child: _players()),
     );
   }
+  ///text displaying
+  _text(){
+    return Container(
+      height: 100,
+      color: Colors.white,
+      child: AnimatedTextKit(
+        animatedTexts: [
+          WavyAnimatedText('Taj Mahal', textStyle: TextStyle(fontSize:40,color:Colors.green)),
+          ColorizeAnimatedText(' Built by a whopping 22,000 laborers, painters, stonecutters, embroidery artists.', textStyle: TextStyle(fontSize:30,color:Colors.green),colors: [Colors.amber,Colors.green,Colors.yellow,Colors.orange,Colors.blue]),
+          ColorizeAnimatedText(' It intricate work of art and architectural genius took 17 years to complete.', textStyle: TextStyle(fontSize:30,color:Colors.green),colors: [Colors.amber,Colors.green,Colors.yellow,Colors.orange,Colors.blue]),
+          ColorizeAnimatedText(' The materials that were used to build Taj Mahal were transported to the construction site by a whopping 1,000 elephants.', textStyle: TextStyle(fontSize:30,color:Colors.green),colors: [Colors.amber,Colors.green,Colors.yellow,Colors.orange,Colors.blue]),
+          ColorizeAnimatedText(' Taj Mahal is a famous Indian landmark and tourist magnet, attracting more than a million tourists every year.', textStyle: TextStyle(fontSize:30,color:Colors.green),colors: [Colors.amber,Colors.green,Colors.yellow,Colors.orange,Colors.blue]),
+          ColorizeAnimatedText(' Taj Mahal is indeed a beautiful place', textStyle: TextStyle(fontSize:30,color:Colors.green),colors: [Colors.amber,Colors.green,Colors.yellow,Colors.orange,Colors.blue]),
+          
+        ],
+
+      )
+
+    );
+
+  }
 
   /// Plants , Zombies & bullet will be displayed
   Widget _players() {
@@ -206,6 +232,17 @@ class _HomePageState extends State<HomePage> {
           duration: Duration(milliseconds: 0),
           alignment: Alignment(_zombie.x, _zombie.y),
           child: Zombie(),
+        ),
+        Container(
+          width: 100.0,
+          height: 100.0,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(Assets.monumentMock),
+              alignment: Alignment(_monument.x, _monument.y),
+              scale: 0.1,
+            ),
+          ),
         ),
       ],
     );
